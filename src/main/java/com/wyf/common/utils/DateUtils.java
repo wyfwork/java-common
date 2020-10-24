@@ -55,7 +55,6 @@ public class DateUtils {
 
     /**
      * 获取今日年份
-     *
      * @return yyyy
      */
     public static String getTodayYear() {
@@ -64,7 +63,6 @@ public class DateUtils {
 
     /**
      * 获取今日月份
-     *
      * @return MM
      */
     public static String getTodayMonth() {
@@ -73,7 +71,6 @@ public class DateUtils {
 
     /**
      * 获取今日日期
-     *
      * @return dd
      */
     public static String getTodayDay() {
@@ -82,7 +79,6 @@ public class DateUtils {
 
     /**
      * 获取短日月
-     *
      * @return MMdd
      */
     public static String getTodayChar4() {
@@ -91,7 +87,6 @@ public class DateUtils {
 
     /**
      * 把日期转换成6字符的格式类型字符串，如200801
-     *
      * @param date 日期
      * @return String
      */
@@ -102,7 +97,6 @@ public class DateUtils {
 
     /**
      * 返回年月
-     *
      * @return yyyyMM
      */
     public static String getTodayChar6() {
@@ -111,7 +105,6 @@ public class DateUtils {
 
     /**
      * 返回年月日
-     *
      * @return yyyyMMdd
      */
     public static String getTodayChar8() {
@@ -120,7 +113,6 @@ public class DateUtils {
 
     /**
      * 返回 年月日小时分
-     *
      * @return yyyyMMddHHmm
      */
     public static String getTodayChar12() {
@@ -129,7 +121,6 @@ public class DateUtils {
 
     /**
      * 返回 年月日小时分秒
-     *
      * @return yyyyMMddHHmmss
      */
     public static String getTodayChar14() {
@@ -138,7 +129,6 @@ public class DateUtils {
 
     /**
      * 返回 年月日小时分秒 毫秒
-     *
      * @return yyyyMMddHHmmssS
      */
     public static String getTodayChar17() {
@@ -158,7 +148,6 @@ public class DateUtils {
 
     /**
      * 将指定Date类型参数转换为指定的Oracle日期时间格式字符串
-     *
      * @return String
      */
     public static String getOracleDate(Date inputDateTime) throws NullPointerException {
@@ -172,13 +161,9 @@ public class DateUtils {
 
     /**
      * 比对两个时间间隔
-     *
-     * @param startDateTime
-     *            开始时间
-     * @param endDateTime
-     *            结束时间
-     * @param distanceType
-     *            计算间隔类型 天d 小时h 分钟m 秒s
+     * @param startDateTime 开始时间
+     * @param endDateTime 结束时间
+     * @param distanceType 计算间隔类型 天d 小时h 分钟m 秒s
      * @return
      */
     public static String getDistanceDT(String startDateTime, String endDateTime, String distanceType) {
@@ -283,7 +268,7 @@ public class DateUtils {
             Date startDate = tempDateFormat.parse(startDateTime);
             Calendar theCa = Calendar.getInstance();
             theCa.setTime(startDate);
-            theCa.add(theCa.DATE, days);
+            theCa.add(Calendar.DATE, days);
             return DateFormatUtils.format(theCa.getTime(), "yyyyMMddHHmmss");
         }
         catch (Exception e) {
@@ -301,7 +286,7 @@ public class DateUtils {
     public static String getNextTime(int days) {
         Calendar theCa = Calendar.getInstance();
         theCa.setTime(new Date());
-        theCa.add(theCa.DATE, days);
+        theCa.add(Calendar.DATE, days);
         return DateFormatUtils.format(theCa.getTime(), "yyyyMMddHHmmss");
     }
 
@@ -370,7 +355,7 @@ public class DateUtils {
 
     /**
      * 获取当月最后几天
-     * @param days   最好几天
+     * @param days   最后几天
      * @return
      */
     public static List<String> getLastDays(int days) {
