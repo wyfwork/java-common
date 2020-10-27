@@ -7,11 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
@@ -48,7 +44,7 @@ public class ImageUtils {
      * @Param       [base64Str, w, h]
      * @return      java.awt.Image
      */
-    public static BufferedImage getImageByte(String base64Str, int w, int h) throws IOException {
+    public static BufferedImage getBuffImage(String base64Str, int w, int h) throws IOException {
         Image srcImg = base64ToImage(base64Str);
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 
@@ -59,9 +55,50 @@ public class ImageUtils {
         return resizedImg;
     }
 
+
+    /**
+     * @Description base64-->指定大小image的图片
+     * @ClassName   getImageByte
+     * @Date        13:20 2020/4/23
+     * @Param       [base64Str,imgType]
+     * @return      java.awt.Image
+     */
+    private static byte[] getImageByte(String base64Str,String imgType) throws IOException,HeadlessException {
+        if (base64Str.length()==0){
+            return null;
+        }
+
+        BASE64Decoder decode = new BASE64Decoder();
+        byte [] datas= decode.decodeBuffer(base64Str);
+        for (int i = 0; i < datas.length; ++i) {
+            if (datas[i] < 0) {//调整异常数据
+                datas[i] += 256;
+            }
+        }
+
+        InputStream b = new ByteArrayInputStream(datas);
+        // Image image = Toolkit.getDefaultToolkit().createImage(datas);
+        BufferedImage srcImg = ImageIO.read(b);
+        // BufferedImage srcImg = toBufferedImage(read);
+        int w = srcImg.getWidth();
+        int h = srcImg.getHeight();
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, w, h, null);
+        g2.dispose();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write((BufferedImage) resizedImg, imgType, baos);
+        byte[] by = baos.toByteArray();
+        baos.close();
+        return by;
+    }
+
     /**
      * @Description 获取图片数组返回Image
-     * @ClassName   byteToImage
+     * @ClassName   base64ToImage
      * @Date        8:28 2020/4/14
      * @Param       [datas]
      * @return      java.awt.Image

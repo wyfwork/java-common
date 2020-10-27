@@ -10,18 +10,16 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * @Description: IO文件工具类
+ *****************************************************************************************
+ * 注意！！！Toolkit.getDefaultToolkit()需要慎用可能在linux平台会出现问题->HeadlessException错误**
+ *****************************************************************************************
  * @Date: 2020/10/24 19:54
  * @Version: 1.0
  */
@@ -106,7 +104,24 @@ public class FileUtils {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write((BufferedImage) image, type, baos);
         byte[] by = baos.toByteArray();
+        baos.close();
         return Base64Utils.encodeToString(Objects.requireNonNull(by)).replaceAll("\r\n", "");
+    }
+
+    /***
+     * imge->string(base64)
+     * 注意是否存在色差
+     * @param image
+     * @param type
+     * @return  String
+     * @throws IOException
+     */
+    public static byte[] Image2Byte(Image image, String type) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write((BufferedImage) image, type, baos);
+        byte[] by = baos.toByteArray();
+        baos.close();
+        return by;
     }
 
 
@@ -267,6 +282,47 @@ public class FileUtils {
             default:
                 return "0000";
         }
+    }
+
+    /***
+     * 判断文件真实类型是否是png或者jpg
+     * @param   bytes
+     * @return  boolean
+     * @throws
+     */
+    private static boolean bytesToHexType(byte[] bytes) {
+        byte[] src = new byte[3];
+        StringBuilder stringBuilder = new StringBuilder();
+        InputStream stream = new ByteArrayInputStream(bytes);
+        try {
+            stream.read(src, 0, src.length);
+
+            for (int i = 0; i < src.length; i++) {
+                int v = src[i] & 0xFF;
+                String hv = Integer.toHexString(v);
+                if (hv.length() < 2) {
+                    stringBuilder.append(0);
+                }
+                stringBuilder.append(hv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        String code = stringBuilder.toString().toUpperCase();
+        if ("FFD8FF".equals(code) || "89504E".equals(code) || "ffd8ff".equals(code) ||
+                "89504e".equals(code)) {
+            return true;
+        }
+        return false;
     }
 
     /**
