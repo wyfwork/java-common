@@ -1,6 +1,5 @@
 package com.wyf.common.utils;
 
-import sun.misc.BASE64Decoder;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.util.Base64Utils;
 
