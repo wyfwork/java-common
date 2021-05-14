@@ -8,7 +8,7 @@
     <groupId>com.wyf.common</groupId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>java-common</name>
+    <name>common-dependencies</name>
     <url>https://github.com/wyfwork/java-common</url>
     <inceptionYear>2020-Now</inceptionYear>
 
@@ -23,6 +23,8 @@
         <lombok.version>1.18.20</lombok.version>
         <hutool.version>5.3.7</hutool.version>
         <commons-lang3.version>3.9</commons-lang3.version>
+        <common-codec.version>1.10</common-codec.version>
+        <spring-core.version>5.1.5.RELEASE</spring-core.version>
     </properties>
 
     <dependencyManagement>
@@ -36,12 +38,13 @@
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>1.11</version>
+                <version>${common-codec.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
+                <version>${spring-core.version}</version>
             </dependency>
 
             <dependency>
